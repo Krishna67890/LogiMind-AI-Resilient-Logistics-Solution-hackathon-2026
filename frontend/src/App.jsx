@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import AboutPage from './pages/AboutPage';
 import FeaturesPage from './pages/FeaturesPage';
+import AuthPage from './pages/AuthPage';
 import { animatePage } from './animations/animations';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/auth" element={<AuthPage />} />
           </Routes>
         </main>
       </div>
