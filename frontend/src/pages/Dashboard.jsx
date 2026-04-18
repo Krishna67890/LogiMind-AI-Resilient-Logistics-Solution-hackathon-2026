@@ -68,6 +68,7 @@ const Dashboard = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops' or 'intel'
+  const [activeNodeTab, setActiveNodeTab] = useState('logs'); // 'logs' or 'reports'
 
   const tacticalAdvice = {
     none: {
