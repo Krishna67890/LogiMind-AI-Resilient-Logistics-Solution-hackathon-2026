@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -16,16 +16,32 @@ import {
   MousePointer2,
   FileText,
   FileSearch,
-  Printer
+  Printer,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import NetworkBackground from '../components/NetworkBackground';
-
 import TerminalPreview from '../components/TerminalPreview';
+import { voiceAssistant } from '../utils/voiceProtocol';
 
 const LandingPage = () => {
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
+  const [isBriefing, setIsBriefing] = useState(false);
+
+  const startBriefing = () => {
+    setIsBriefing(true);
+    voiceAssistant.speak(
+      "Welcome to LogiMind AI Command. Our mission is to secure global logistics resilience using Gemini AI and Google Cloud. We align with UN Sustainable Development Goals 9 and 12, building redundant, self-healing supply networks that survive real-world chaos. Systems are standing by for your authorization.",
+      "high"
+    );
+  };
+
+  const stopBriefing = () => {
+    setIsBriefing(false);
+    voiceAssistant.stop();
+  };
 
   return (
     <div className="min-h-screen bg-dark relative overflow-hidden selection:bg-cyan/30">
@@ -97,10 +113,16 @@ const LandingPage = () => {
               <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
 
-            <Link to="/features" className="group w-full sm:w-auto flex items-center justify-center gap-3 px-8 md:px-12 py-6 md:py-8 glass-card border-white/5 text-white font-black uppercase tracking-widest text-[10px] md:text-xs hover:bg-white/10">
-              Technical Specs
-              <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform text-cyan" />
-            </Link>
+            <button
+              onClick={isBriefing ? stopBriefing : startBriefing}
+              className={`group w-full sm:w-auto flex items-center justify-center gap-3 px-8 md:px-12 py-6 md:py-8 glass-card border-white/5 text-white font-black uppercase tracking-widest text-[10px] md:text-xs hover:bg-white/10 transition-all ${isBriefing ? 'border-cyan/50 bg-cyan/5' : ''}`}
+            >
+              {isBriefing ? (
+                <>Stop Briefing <VolumeX size={14} className="text-magenta animate-pulse" /></>
+              ) : (
+                <>Mission Briefing <Volume2 size={14} className="text-cyan group-hover:scale-125 transition-transform" /></>
+              )}
+            </button>
           </motion.div>
 
           {/* Data Stream HUD Overlay */}

@@ -37,6 +37,7 @@ import NeuralGridCanvas from '../components/NeuralGridCanvas';
 import GlobalMapOverlay from '../components/GlobalMapOverlay';
 import SmartNotification from '../components/SmartNotification';
 import { sounds } from '../utils/sounds';
+import { voiceAssistant } from '../utils/voiceProtocol';
 
 const Dashboard = () => {
   const [isThinking, setIsThinking] = useState(false);
@@ -157,6 +158,7 @@ const Dashboard = () => {
       setOptimizationScore(92);
       showNotify("System Restored to Nominal", "success");
       addLog("CORE_RESET: All parameters normalized.", "info");
+      voiceAssistant.speak("System restored to nominal status. Monitoring grid for future disruptions.");
       return;
     }
 
@@ -166,6 +168,14 @@ const Dashboard = () => {
     setIsThinking(true);
     addLog(`INITIATING ${s.toUpperCase()} PROTOCOL...`, "warning");
     showNotify(`${s.toUpperCase()} Detected in Sector 72`, "info");
+
+    const voiceMessages = {
+      rain: "Storm cell detected in Sector 72. High flood probability. Calculating aquatic bypass.",
+      traffic: "Major gridlock identified on Sector 7 Arterial. Rerouting fleet to industrial slipways.",
+      accident: "Asset collision confirmed at Nexus-9. Emergency response initiated. Rerouting 14 units.",
+      chaos: "Warning: Multiple vector failure detected. System stability critical. Initiating Chaos recovery protocol."
+    };
+    voiceAssistant.speak(voiceMessages[s] || `Warning: Disruption detected in sector 72. Initiating recovery protocol.`);
 
     setTimeout(() => {
       setIsThinking(false);
