@@ -24,7 +24,9 @@ import {
   Bell,
   Lock,
   Printer,
-  Menu
+  Menu,
+  Volume2,
+  ShieldCheck
 } from 'lucide-react';
 import {
   AreaChart,
