@@ -68,7 +68,41 @@ const Dashboard = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops' or 'intel'
-  const [activeNodeTab, setActiveNodeTab] = useState('logs'); // 'logs' or 'reports'
+
+  const tacticalAdvice = {
+    none: {
+      status: "STABLE",
+      advice: "Maintain current flow. Sector 72 is at 94% efficiency. No anomalies detected in current window.",
+      threats: "NONE",
+      optimization: "ENABLED"
+    },
+    traffic: {
+      status: "CONGESTED",
+      advice: "Execute Reroute Beta-9. Gridlock on Sector 7 Arterial. AI suggesting 12% faster bypass via industrial corridor.",
+      threats: "MEDIUM - INFRASTRUCTURE",
+      optimization: "ACTIVE_REROUTE"
+    },
+    rain: {
+      status: "VOLATILE",
+      advice: "Pre-emptive storm-cell avoidance active. Diverting high-value assets to covered transit nodes. Latency may increase by 4ms.",
+      threats: "HIGH - WEATHER",
+      optimization: "SAFETY_PRIORITY"
+    },
+    accident: {
+      status: "CRITICAL",
+      advice: "Asset collision at Nexus-9. Emergency bypass protocol engaged. 14 surrounding units shifted to redundant paths.",
+      threats: "EXTREME - COLLISION",
+      optimization: "EMERGENCY_RECOVERY"
+    },
+    chaos: {
+      status: "SYSTEM_STRESS",
+      advice: "Multiple threat vectors detected. Engaging Neural Self-Healing. Assets are being distributed to secondary nodes to prevent total network failure.",
+      threats: "MULTIPLE - GLOBAL",
+      optimization: "SURVIVAL_MODE"
+    }
+  };
+
+  const currentAdvice = tacticalAdvice[activeScenario] || tacticalAdvice.none;
   const [reports, setReports] = useState(() => {
     const savedReports = localStorage.getItem('logimind_reports');
     return savedReports ? JSON.parse(savedReports) : [];
@@ -399,12 +433,20 @@ const Dashboard = () => {
              Core_Ops
            </button>
            <button
+             onClick={() => setActiveSidebarTab('advice')}
+             className={`flex-1 py-4 text-[9px] font-black uppercase tracking-[0.2em] transition-all border-b-2 ${
+               activeSidebarTab === 'advice' ? 'border-magenta text-magenta bg-magenta/5' : 'border-transparent text-slate-500 hover:text-slate-300'
+             }`}
+           >
+             AI_Intel
+           </button>
+           <button
              onClick={() => setActiveSidebarTab('intel')}
              className={`flex-1 py-4 text-[9px] font-black uppercase tracking-[0.2em] transition-all border-b-2 ${
                activeSidebarTab === 'intel' ? 'border-acid text-acid bg-acid/5' : 'border-transparent text-slate-500 hover:text-slate-300'
              }`}
            >
-             Intel_Log ({reports.length})
+             Logs ({reports.length})
            </button>
         </div>
 
@@ -473,6 +515,54 @@ const Dashboard = () => {
                       <CheckCircle2 size={14} /> Reset System
                     </button>
                  </div>
+              </section>
+            </>
+          ) : activeSidebarTab === 'advice' ? (
+            <>
+              {/* AI TACTICAL ADVICE SECTION */}
+              <section className="space-y-6">
+                <div className="glass-card p-5 border-l-4 border-l-magenta bg-magenta/5">
+                   <p className="text-[10px] font-black text-magenta uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+                      <Cpu size={14} /> Neural Status
+                   </p>
+                   <div className="space-y-4">
+                      <div>
+                         <p className="text-[8px] text-slate-500 uppercase font-bold mb-1">Network Mode</p>
+                         <p className={`text-sm font-black font-mono tracking-tighter ${activeScenario === 'none' ? 'text-cyan' : 'text-magenta'}`}>
+                            {currentAdvice.status}
+                         </p>
+                      </div>
+                      <div>
+                         <p className="text-[8px] text-slate-500 uppercase font-bold mb-1">Optimization Protocol</p>
+                         <p className="text-[10px] text-white font-mono bg-white/5 px-2 py-1 rounded inline-block">
+                            {currentAdvice.optimization}
+                         </p>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="glass-card p-5 border border-white/10">
+                   <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-4">Tactical Intelligence</p>
+                   <div className="p-4 bg-black/40 rounded-lg border border-white/5">
+                      <p className="text-xs font-bold text-slate-300 leading-relaxed italic uppercase">
+                         "{currentAdvice.advice}"
+                      </p>
+                   </div>
+                </div>
+
+                <div className="glass-card p-5 border-l-4 border-l-red-500 bg-red-500/5">
+                   <p className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
+                      <AlertCircle size={14} /> Threat Assessment
+                   </p>
+                   <p className="text-xl font-black text-white tracking-tighter font-mono">{currentAdvice.threats}</p>
+                </div>
+
+                <button
+                  onClick={() => voiceAssistant.speak(currentAdvice.advice, "high")}
+                  className="w-full py-4 glass-card border-cyan/30 text-cyan text-[10px] font-black uppercase tracking-widest hover:bg-cyan/10 transition-all flex items-center justify-center gap-3"
+                >
+                   <Volume2 size={16} /> Audio Briefing
+                </button>
               </section>
             </>
           ) : (
@@ -628,6 +718,34 @@ const Dashboard = () => {
 
                   <div className="scanline-laser opacity-20 pointer-events-none" />
                   <div className="absolute inset-0 grid-overlay opacity-5 pointer-events-none" />
+               </div>
+
+               {/* AI TACTICAL ADVICE OVERLAY (New Sidebar-like component inside Map) */}
+               <div className="absolute top-24 left-4 z-30 w-48 hidden lg:block">
+                  <motion.div
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="glass-card bg-slate-950/80 border-cyan/20 p-3 space-y-3"
+                  >
+                    <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+                       <Cpu size={14} className="text-cyan" />
+                       <span className="text-[9px] font-black text-white uppercase tracking-wider">Tactical Intel</span>
+                    </div>
+                    <div className="space-y-2">
+                       <div className="p-2 bg-cyan/5 rounded border border-cyan/10">
+                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">Route Status</p>
+                          <p className="text-[10px] text-acid font-black font-mono">ALL_OPTIMAL</p>
+                       </div>
+                       <div className="p-2 bg-white/5 rounded border border-white/5">
+                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">AI Suggestion</p>
+                          <p className="text-[10px] text-white font-bold leading-tight uppercase">
+                            {activeScenario === 'none'
+                              ? "Monitor Sector-7 for incoming weather fronts."
+                              : "Diverting Assets to Alpha-9 node via bypass."}
+                          </p>
+                       </div>
+                    </div>
+                  </motion.div>
                </div>
 
                {/* INTERACTIVE ASSET LAYER */}

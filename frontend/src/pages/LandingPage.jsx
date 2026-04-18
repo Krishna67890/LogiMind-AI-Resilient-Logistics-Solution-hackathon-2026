@@ -434,13 +434,14 @@ const LandingPage = () => {
              </div>
 
              <div className="flex-1 w-full aspect-video glass-card border-white/10 bg-slate-900/50 relative overflow-hidden group">
-                {/* Video Placeholder - Replace with iframe */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                   <div className="w-20 h-20 rounded-full bg-cyan/20 border border-cyan/40 flex items-center justify-center text-cyan group-hover:scale-110 transition-transform cursor-pointer">
-                      <ArrowUpRight size={32} />
-                   </div>
-                   <p className="absolute bottom-8 text-[10px] font-mono text-slate-500 tracking-[0.5em] uppercase">Connect Demo Link In Command_Center</p>
-                </div>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="LogiMind AI Demo"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
                 <div className="absolute inset-0 pointer-events-none border-[20px] border-black/40" />
                 <div className="scanline-laser opacity-20" />
              </div>

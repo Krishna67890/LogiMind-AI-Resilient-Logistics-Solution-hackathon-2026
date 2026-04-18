@@ -12,8 +12,14 @@ const GlobalMapOverlay = () => {
   ];
 
   const capitalNodes = [
-    { x: 120, y: 140 }, { x: 220, y: 350 }, { x: 480, y: 180 },
-    { x: 520, y: 400 }, { x: 720, y: 500 }, { x: 600, y: 150 }
+    { id: 1, x: 120, y: 140 }, { id: 2, x: 220, y: 350 }, { id: 3, x: 480, y: 180 },
+    { id: 4, x: 520, y: 400 }, { id: 5, x: 720, y: 500 }, { id: 6, x: 600, y: 150 }
+  ];
+
+  const connections = [
+    { from: 1, to: 2 }, { from: 1, to: 3 }, { from: 2, to: 4 },
+    { from: 3, to: 4 }, { from: 3, to: 6 }, { from: 4, to: 5 },
+    { from: 6, to: 5 }
   ];
 
   return (
@@ -47,6 +53,27 @@ const GlobalMapOverlay = () => {
             filter="url(#mapGlow)"
           />
         ))}
+
+        {/* Pathfinding connections */}
+        {connections.map((conn, i) => {
+          const from = capitalNodes.find(n => n.id === conn.from);
+          const to = capitalNodes.find(n => n.id === conn.to);
+          return (
+            <motion.line
+              key={`conn-${i}`}
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
+              stroke="#00f2ff"
+              strokeWidth="0.5"
+              strokeDasharray="4 4"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.4 }}
+              transition={{ duration: 2, delay: 1 + i * 0.2 }}
+            />
+          );
+        })}
 
         {capitalNodes.map((node, i) => (
           <g key={i}>
