@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Target, ShieldCheck, Globe, Zap, Cpu, BarChart3, Users, Rocket, Network, ChevronRight, Github, Mail, Volume2, VolumeX, ExternalLink } from 'lucide-react';
 import { voiceAssistant } from '../utils/voiceProtocol';
-import boyImg from '../assets/boy.png';
-import girlImg from '../assets/girl.png';
 
 const AboutPage = () => {
   const [isBriefing, setIsBriefing] = useState(false);
@@ -188,10 +186,10 @@ const AboutPage = () => {
                 <div className="w-32 h-32 mx-auto rounded-full bg-cyan/10 border-2 border-cyan/30 p-1 mb-8 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                   <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan overflow-hidden">
                     <img
-                      src={boyImg}
+                      src="https://krishna-patil-rajput.vercel.app/_next/image?url=%2Fkrishnapic.jpg&w=1920&q=75"
                       alt="Krishna Patil Rajput"
                       className="w-full h-full object-cover"
-                      onError={(e) => e.target.src = 'https://krishna-patil-rajput.vercel.app/_next/image?url=%2Fkrishnapic.jpg&w=1920&q=75'}
+                      onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=Krishna+Rajput&background=00f2ff&color=000'}
                     />
                   </div>
                 </div>
@@ -220,10 +218,9 @@ const AboutPage = () => {
                 <div className="w-32 h-32 mx-auto rounded-full bg-magenta/10 border-2 border-magenta/30 p-1 mb-8 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                   <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-magenta overflow-hidden">
                     <img
-                      src={girlImg}
+                      src="https://ui-avatars.com/api/?name=Vanshita+Sawale&background=ff00ff&color=fff&size=256"
                       alt="Vanshita Sawale"
                       className="w-full h-full object-cover"
-                      onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=Vanshita+Sawale&background=ff00ff&color=fff&size=256'}
                     />
                   </div>
                 </div>
