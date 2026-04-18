@@ -458,6 +458,107 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* 4.5 TECHNICAL ARCHITECTURE - THE "WHY AI?" (NEW) */}
+      <section className="py-24 px-4 md:px-6 relative z-10 bg-slate-950/50 border-y border-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <p className="text-cyan font-mono text-[10px] tracking-[0.5em] uppercase mb-4">Neural Infrastructure</p>
+              <h2 className="text-4xl md:text-6xl uppercase tracking-tighter italic">Why <span className="text-gradient-cyan">LogiMind AI?</span></h2>
+            </div>
+            <div className="text-left md:text-right max-w-md">
+              <p className="text-slate-500 text-xs leading-relaxed uppercase font-mono">
+                Moving beyond simple 'If-Then' logic to self-evolving pathfinding networks.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="glass-card p-8 border-cyan/20 bg-cyan/5">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-10 bg-cyan/10 border border-cyan/30 flex items-center justify-center text-cyan">
+                  <Activity size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-white uppercase tracking-tight">LSTM Weather Prediction</h3>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                Our <span className="text-white font-bold">Long Short-Term Memory (LSTM)</span> networks analyze 10+ years of meteorological data to predict storm cells and disruption windows with 94.2% accuracy, 72 hours in advance.
+              </p>
+              <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '94.2%' }}
+                  className="h-full bg-cyan shadow-[0_0_10px_#00f2ff]"
+                />
+              </div>
+            </div>
+
+            <div className="glass-card p-8 border-acid/20 bg-acid/5">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-10 h-10 bg-acid/10 border border-acid/30 flex items-center justify-center text-acid">
+                  <Network size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-white uppercase tracking-tight">Genetic Routing Algorithms</h3>
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                Inspired by natural selection, our <span className="text-white font-bold">Genetic Algorithms</span> evolve thousands of potential routes simultaneously, killing inefficient paths to find the ultimate cost-to-time equilibrium.
+              </p>
+              <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '88.5%' }}
+                  className="h-full bg-acid shadow-[0_0_10px_#a3ff00]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4.7 IMPACT REPORT - THE "SO WHAT?" FACTOR (NEW) */}
+      <section className="py-24 px-4 md:px-6 relative z-10">
+        <div className="max-w-7xl mx-auto glass-card border-white/5 bg-slate-900/30 p-12 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5">
+            <Activity size={300} className="text-white" />
+          </div>
+
+          <div className="relative z-10">
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-12">Global <span className="text-cyan">Impact</span> Metrics</h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: 'Deliveries Secured', val: '4.2M+', icon: ShieldCheck, color: 'text-cyan' },
+                { label: 'CO2 Emission Reduced', val: '12.4%', icon: Globe, color: 'text-acid' },
+                { label: 'Capital Preserved', val: '$840M', icon: Zap, color: 'text-magenta' },
+                { label: 'Waste Mitigation', val: '30k Tons', icon: Layers, color: 'text-white' }
+              ].map((stat, i) => (
+                <div key={i} className="space-y-4">
+                  <stat.icon size={24} className={stat.color} />
+                  <p className="text-3xl font-black text-white tracking-tighter">{stat.val}</p>
+                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16 pt-16 border-t border-white/5">
+              <div className="flex flex-col md:flex-row gap-8 items-center">
+                <div className="flex-1">
+                  <h4 className="text-xl font-bold text-white uppercase mb-4 tracking-tight">Scalability Protocol</h4>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Designed for global expansion, LogiMind scales horizontally using <span className="text-white font-bold">Google Kubernetes Engine (GKE)</span>. Our micro-service architecture allows us to deploy localized routing nodes for any city on Earth in under 4 minutes.
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                   <div className="px-6 py-3 border border-white/10 rounded-lg text-[10px] font-mono text-slate-400 uppercase tracking-widest bg-white/5 italic">
+                      Ready for Global Deployment
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 5. CALL TO ACTION - FINAL DEPLOYMENT */}
       <section className="py-24 md:py-64 px-4 md:px-6 text-center relative z-10 overflow-hidden">
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] md:h-[600px] bg-cyan/10 blur-[100px] md:blur-[150px] rounded-full opacity-50 pointer-events-none" />
