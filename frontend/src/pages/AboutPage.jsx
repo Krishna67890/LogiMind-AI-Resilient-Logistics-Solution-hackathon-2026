@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Target, ShieldCheck, Globe, Zap, Cpu, BarChart3, Users, Rocket, Network, ChevronRight, Github, Mail, Volume2, VolumeX } from 'lucide-react';
+import { Target, ShieldCheck, Globe, Zap, Cpu, BarChart3, Users, Rocket, Network, ChevronRight, Github, Mail, Volume2, VolumeX, ExternalLink } from 'lucide-react';
 import { voiceAssistant } from '../utils/voiceProtocol';
-import boyImg from '../assets/boy.png';
-import girlImg from '../assets/girl.png';
 
 const AboutPage = () => {
   const [isBriefing, setIsBriefing] = useState(false);
@@ -187,17 +185,25 @@ const AboutPage = () => {
              >
                 <div className="w-32 h-32 mx-auto rounded-full bg-cyan/10 border-2 border-cyan/30 p-1 mb-8 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                   <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-cyan overflow-hidden">
-                    <img src={boyImg} alt="Krishna Patil Rajput" className="w-full h-full object-cover" onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=Krishna+Rajput&background=00f2ff&color=000'} />
+                    <img
+                      src="https://krishna-patil-rajput.vercel.app/_next/image?url=%2Fkrishnapic.jpg&w=1920&q=75"
+                      alt="Krishna Patil Rajput"
+                      className="w-full h-full object-cover"
+                      onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=Krishna+Rajput&background=00f2ff&color=000'}
+                    />
                   </div>
                 </div>
                 <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">Krishna Patil Rajput</h3>
                 <p className="text-cyan font-mono text-xs uppercase tracking-[0.3em] mb-6">Lead Developer // AI Architect</p>
                 <div className="flex justify-center gap-6">
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                    <Github size={20} className="text-slate-600 hover:text-white cursor-pointer transition-colors" />
+                  <a href="https://github.com/Krishna67890" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                    <Github size={20} className="text-slate-600 group-hover:text-white" />
                   </a>
-                  <a href="mailto:contact@logimind.ai">
-                    <Mail size={20} className="text-slate-600 hover:text-white cursor-pointer transition-colors" />
+                  <a href="https://krishna-patil-rajput.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-cyan transition-colors">
+                    <ExternalLink size={20} className="text-slate-600 group-hover:text-cyan" />
+                  </a>
+                  <a href="mailto:krishnapatilrajput.dev@gmail.com">
+                    <Mail size={20} className="text-slate-600 hover:text-white transition-colors" />
                   </a>
                 </div>
                 <div className="absolute inset-0 border border-cyan/0 group-hover:border-cyan/20 transition-all rounded-xl pointer-events-none" />
@@ -211,7 +217,11 @@ const AboutPage = () => {
              >
                 <div className="w-32 h-32 mx-auto rounded-full bg-magenta/10 border-2 border-magenta/30 p-1 mb-8 group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                   <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-magenta overflow-hidden">
-                    <img src={girlImg} alt="Vanshita Sawale" className="w-full h-full object-cover" onError={(e) => e.target.src = 'https://ui-avatars.com/api/?name=Vanshita+Sawale&background=ff00ff&color=fff'} />
+                    <img
+                      src="https://ui-avatars.com/api/?name=Vanshita+Sawale&background=ff00ff&color=fff&size=256"
+                      alt="Vanshita Sawale"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
                 <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">Vanshita Sawale</h3>
