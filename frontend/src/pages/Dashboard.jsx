@@ -65,17 +65,23 @@ const Dashboard = () => {
     delta: 88
   });
 
+  // Advanced Simulation Controls
+  const [simulationEntropy, setSimulationEntropy] = useState(0.02);
+  const [isNeuralOverdrive, setIsNeuralOverdrive] = useState(false);
+
   // Neural Simulation Engine (Edge-Critical Dijkstra-A* hybrid)
-  const runSimulation = () => {
+  const runSimulation = (entropyOverride = null) => {
     setIsThinking(true);
-    addLog("CORE: Running Constraint Satisfaction Algorithm...", "system");
+    const currentEntropy = entropyOverride || simulationEntropy;
+    addLog(`CORE: Running Constraint Satisfaction Algorithm (Entropy: ${currentEntropy})...`, "system");
 
     setTimeout(() => {
+      const entropyFactor = currentEntropy * 100;
       const newMatrix = {
-        alpha: Math.floor(Math.random() * 20) + 75,
-        beta: Math.floor(Math.random() * 15) + 80,
-        gamma: Math.floor(Math.random() * 25) + 65,
-        delta: Math.floor(Math.random() * 10) + 85
+        alpha: Math.floor(Math.random() * (30 - entropyFactor)) + (70 - entropyFactor),
+        beta: Math.floor(Math.random() * (25 - entropyFactor)) + (75 - entropyFactor),
+        gamma: Math.floor(Math.random() * (35 - entropyFactor)) + (60 - entropyFactor),
+        delta: Math.floor(Math.random() * (20 - entropyFactor)) + (80 - entropyFactor)
       };
       setThroughputMatrix(newMatrix);
       const avg = Object.values(newMatrix).reduce((a, b) => a + b, 0) / 4;
