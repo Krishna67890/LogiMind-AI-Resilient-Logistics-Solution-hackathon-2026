@@ -72,7 +72,79 @@ const Dashboard = () => {
   const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops', 'advice', or 'intel'
   const [activeNodeTab, setActiveNodeTab] = useState('logs');
   const [isWhatIfMode, setIsWhatIfMode] = useState(false);
-  const [simulationImpact, setSimulationImpact] = useState(null);
+
+  const tacticalIntelReports = [
+    {
+      id: "INTEL_01",
+      disruption: "Static discharge at Terminal 4 causing sensor desync.",
+      mitigation: "Redirecting 14% of cargo via secondary industrial slipway Alpha.",
+      efficiency: "+4.2%",
+      severity: "LOW"
+    },
+    {
+      id: "INTEL_02",
+      disruption: "Localized flooding in Sector 72. High-risk for electric fleet.",
+      mitigation: "Neural pathfinding engaged: Rerouting via elevated bypass 9.",
+      efficiency: "+12.8%",
+      severity: "MEDIUM"
+    },
+    {
+      id: "INTEL_03",
+      disruption: "Cyber-physical bottleneck detected at Nexus-9 gate.",
+      mitigation: "Executing multi-modal pivot to rail transit for urgent crates.",
+      efficiency: "+6.5%",
+      severity: "HIGH"
+    },
+    {
+      id: "INTEL_04",
+      disruption: "Vessel desync at Port Omega due to fog. Throughput reduction 22%.",
+      mitigation: "Predictive buffering active: Staggering truck arrivals by 15min.",
+      efficiency: "+8.1%",
+      severity: "MEDIUM"
+    },
+    {
+      id: "INTEL_05",
+      disruption: "Power surge at Grid Delta affecting 4 recharging hubs.",
+      mitigation: "Dynamic load balancing: Shifting energy drain to secondary backup cells.",
+      efficiency: "+3.9%",
+      severity: "LOW"
+    },
+    {
+      id: "INTEL_06",
+      disruption: "Asset collision at Sector 7 Arterial. Total lane occlusion.",
+      mitigation: "A* Search Reroute: Diverting 42 assets to minor arterial corridors.",
+      efficiency: "+15.2%",
+      severity: "CRITICAL"
+    },
+    {
+      id: "INTEL_07",
+      disruption: "Ghost bottleneck at Terminal 2: Latency exceeding 14.2s.",
+      mitigation: "Latency buffering: Prefetching transit signatures for faster gate scan.",
+      efficiency: "+5.4%",
+      severity: "MEDIUM"
+    },
+    {
+      id: "INTEL_08",
+      disruption: "Localized seismic vibration in Industrial Zone B.",
+      mitigation: "Structural stability protocol: Slowing fleet to 30km/h in affected grid.",
+      efficiency: "+1.2% (Safety focus)",
+      severity: "LOW"
+    },
+    {
+      id: "INTEL_09",
+      disruption: "Signal jammer detected near warehouse Alpha-1.",
+      mitigation: "Frequency hopping engaged: Switching to redundant dark-fiber mesh.",
+      efficiency: "+2.1%",
+      severity: "MEDIUM"
+    },
+    {
+      id: "INTEL_10",
+      disruption: "Global port congestion ripple affecting 14 ships.",
+      mitigation: "Throughput optimization: Re-sequencing offloading by priority weight.",
+      efficiency: "+18.7%",
+      severity: "HIGH"
+    }
+  ];
 
   const tacticalAdvice = {
     none: {
@@ -1069,9 +1141,40 @@ const Dashboard = () => {
                   >
                     Reports ({reports.length})
                   </button>
+                  <button
+                    onClick={() => setActiveNodeTab('intel')}
+                    className={`flex-1 py-3 text-[9px] font-black uppercase tracking-[0.2em] transition-all border-b-2 ${
+                      activeNodeTab === 'intel' ? 'border-magenta text-magenta bg-magenta/5' : 'border-transparent text-slate-500 hover:text-slate-300'
+                    }`}
+                  >
+                    Tactical Intel
+                  </button>
                </div>
                <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
-                  {activeNodeTab === 'logs' ? (
+                  {activeNodeTab === 'intel' ? (
+                    <div className="space-y-4">
+                      {tacticalIntelReports.map((report) => (
+                        <div key={report.id} className="p-3 bg-white/5 border-l-2 border-magenta/50 hover:bg-magenta/5 transition-colors group">
+                           <div className="flex justify-between items-start mb-2">
+                             <span className="text-[9px] font-black text-magenta tracking-widest">{report.id}</span>
+                             <span className={`text-[7px] px-1.5 py-0.5 font-black uppercase ${
+                               report.severity === 'CRITICAL' ? 'bg-red-500 text-white' :
+                               report.severity === 'HIGH' ? 'bg-orange-500 text-white' :
+                               'bg-white/10 text-slate-400'
+                             }`}>
+                               {report.severity}
+                             </span>
+                           </div>
+                           <p className="text-[10px] text-white font-bold uppercase mb-1">{report.disruption}</p>
+                           <p className="text-[9px] text-slate-400 mb-2 font-mono">MITIGATION: {report.mitigation}</p>
+                           <div className="flex items-center gap-2">
+                             <TrendingUp size={10} className="text-acid" />
+                             <span className="text-[9px] font-black text-acid uppercase">Throughput Gain: {report.efficiency}</span>
+                           </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : activeNodeTab === 'logs' ? (
                     history.map(item => (
                       <div
                         key={item.id}
