@@ -11,6 +11,23 @@
     <meta property="og:description" content="Empowering global trade with neural optimization and digital twin simulations for mission-critical logistics." />
     <meta property="og:image" content="/logo.jpg" />
     <meta name="theme-color" content="#00f2ff" />
+    <script>
+      // PROTECTIVE AUTH GUARD - Global Kernel Gate
+      (function() {
+        const path = window.location.pathname;
+        const token = localStorage.getItem('logimind_auth_token');
+        const timestamp = localStorage.getItem('logimind_auth_timestamp');
+        const sessionTimeout = 30 * 60 * 1000; // 30 Minutes
+
+        if (path.includes('/dashboard')) {
+          if (!token || !timestamp || (Date.now() - parseInt(timestamp) > sessionTimeout)) {
+            localStorage.removeItem('logimind_auth_token');
+            localStorage.removeItem('logimind_auth_timestamp');
+            window.location.href = '/auth?error=unauthorized';
+          }
+        }
+      })();
+    </script>
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Advanced Resource Hints -->

@@ -26,6 +26,9 @@ const AuthPage = () => {
     // Simulated Booting Sequence
     setTimeout(() => {
       setLoading(false);
+      const mockToken = `LOGIMIND_TOKEN_${Date.now()}`;
+      localStorage.setItem('logimind_auth_token', mockToken);
+      localStorage.setItem('logimind_auth_timestamp', Date.now().toString());
       window.location.href = '/dashboard';
     }, 2000);
   };
