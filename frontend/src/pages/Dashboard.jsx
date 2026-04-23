@@ -8,6 +8,10 @@ import {
   Car,
   ShieldAlert,
   History,
+  User,
+  LogOut,
+  Camera,
+  Save,
   CheckCircle2,
   Terminal as TerminalIcon,
   ChevronRight,
@@ -104,6 +108,39 @@ const Dashboard = () => {
   const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops', 'advice', or 'intel'
   const [activeNodeTab, setActiveNodeTab] = useState('logs');
   const [isWhatIfMode, setIsWhatIfMode] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [userData, setUserData] = useState(() => {
+    const saved = localStorage.getItem('logimind_user_data');
+    return saved ? JSON.parse(saved) : {
+      name: 'KRISHNA_OPERATOR',
+      email: 'operator@logimind.ai',
+      photo: null,
+      rank: 'Senior Strategist',
+      clearance: 'Level 5 (Superuser)'
+    };
+  });
+
+  const handleLogout = () => {
+    localStorage.removeItem('logimind_auth_token');
+    localStorage.removeItem('logimind_auth_timestamp');
+    window.location.href = '/auth';
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUserData(prev => ({ ...prev, photo: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const saveUserData = () => {
+    localStorage.setItem('logimind_user_data', JSON.stringify(userData));
+    showNotify("Operator Profile Updated", "success");
+  };
 
   const tacticalIntelReports = [
     {
@@ -523,6 +560,95 @@ const Dashboard = () => {
             className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
           />
         )}
+
+        {isProfileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="w-full max-w-md glass-card bg-slate-900/95 border-white/10 overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            >
+              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <div className="flex items-center gap-3">
+                  <User className="text-cyan" size={20} />
+                  <h2 className="text-sm font-black uppercase tracking-[0.4em] text-white">Operator Profile</h2>
+                </div>
+                <button onClick={() => setIsProfileOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                  <X size={20} className="text-slate-500" />
+                </button>
+              </div>
+
+              <div className="p-8 space-y-8">
+                <div className="flex flex-col items-center">
+                  <div className="relative group">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-cyan/30 bg-black/40 relative">
+                      {userData.photo ? (
+                        <img src={userData.photo} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-700">
+                          <User size={40} />
+                        </div>
+                      )}
+                      <label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <Camera size={20} className="text-cyan mb-1" />
+                        <span className="text-[8px] font-black uppercase text-white">Upload</span>
+                        <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-center">
+                    <p className="text-xs font-black text-white uppercase tracking-widest">{userData.name}</p>
+                    <p className="text-[10px] font-bold text-cyan uppercase tracking-tighter mt-1">{userData.rank}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Command Designation</label>
+                    <input
+                      type="text"
+                      value={userData.name}
+                      onChange={(e) => setUserData({...userData, name: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Neural ID (Email)</label>
+                    <input
+                      type="email"
+                      value={userData.email}
+                      onChange={(e) => setUserData({...userData, email: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={saveUserData}
+                    className="flex-1 bg-cyan hover:bg-white text-black py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <Save size={14} />
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="flex-1 bg-magenta/10 border border-magenta/30 text-magenta hover:bg-magenta hover:text-white py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={14} />
+                    Log Out
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* LEFT SIDEBAR: CORE METRICS & CONTROLS */}
@@ -799,6 +925,16 @@ const Dashboard = () => {
                   ) : <Printer size={14} />}
                   Print Report
                </button>
+               <button
+                onClick={() => setIsProfileOpen(true)}
+                className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all group overflow-hidden"
+              >
+                {userData.photo ? (
+                  <img src={userData.photo} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <User size={18} className="text-slate-400 group-hover:text-cyan" />
+                )}
+              </button>
                <button
                 onClick={() => setIsSettingsOpen(true)}
                 className="p-2 glass-card border-white/10 text-slate-400 hover:text-white transition-colors"
@@ -1447,6 +1583,95 @@ const Dashboard = () => {
             </motion.div>
           </motion.div>
         )}
+
+        {isProfileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="w-full max-w-md glass-card bg-slate-900/95 border-white/10 overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            >
+              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <div className="flex items-center gap-3">
+                  <User className="text-cyan" size={20} />
+                  <h2 className="text-sm font-black uppercase tracking-[0.4em] text-white">Operator Profile</h2>
+                </div>
+                <button onClick={() => setIsProfileOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                  <X size={20} className="text-slate-500" />
+                </button>
+              </div>
+
+              <div className="p-8 space-y-8">
+                <div className="flex flex-col items-center">
+                  <div className="relative group">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-cyan/30 bg-black/40 relative">
+                      {userData.photo ? (
+                        <img src={userData.photo} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-700">
+                          <User size={40} />
+                        </div>
+                      )}
+                      <label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <Camera size={20} className="text-cyan mb-1" />
+                        <span className="text-[8px] font-black uppercase text-white">Upload</span>
+                        <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-center">
+                    <p className="text-xs font-black text-white uppercase tracking-widest">{userData.name}</p>
+                    <p className="text-[10px] font-bold text-cyan uppercase tracking-tighter mt-1">{userData.rank}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Command Designation</label>
+                    <input
+                      type="text"
+                      value={userData.name}
+                      onChange={(e) => setUserData({...userData, name: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Neural ID (Email)</label>
+                    <input
+                      type="email"
+                      value={userData.email}
+                      onChange={(e) => setUserData({...userData, email: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={saveUserData}
+                    className="flex-1 bg-cyan hover:bg-white text-black py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <Save size={14} />
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="flex-1 bg-magenta/10 border border-magenta/30 text-magenta hover:bg-magenta hover:text-white py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={14} />
+                    Log Out
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <AnimatePresence>
@@ -1601,6 +1826,95 @@ const Dashboard = () => {
                       Dismiss
                   </button>
                 </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {isProfileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="w-full max-w-md glass-card bg-slate-900/95 border-white/10 overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            >
+              <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <div className="flex items-center gap-3">
+                  <User className="text-cyan" size={20} />
+                  <h2 className="text-sm font-black uppercase tracking-[0.4em] text-white">Operator Profile</h2>
+                </div>
+                <button onClick={() => setIsProfileOpen(false)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                  <X size={20} className="text-slate-500" />
+                </button>
+              </div>
+
+              <div className="p-8 space-y-8">
+                <div className="flex flex-col items-center">
+                  <div className="relative group">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-cyan/30 bg-black/40 relative">
+                      {userData.photo ? (
+                        <img src={userData.photo} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-700">
+                          <User size={40} />
+                        </div>
+                      )}
+                      <label className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <Camera size={20} className="text-cyan mb-1" />
+                        <span className="text-[8px] font-black uppercase text-white">Upload</span>
+                        <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-center">
+                    <p className="text-xs font-black text-white uppercase tracking-widest">{userData.name}</p>
+                    <p className="text-[10px] font-bold text-cyan uppercase tracking-tighter mt-1">{userData.rank}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Command Designation</label>
+                    <input
+                      type="text"
+                      value={userData.name}
+                      onChange={(e) => setUserData({...userData, name: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[8px] font-black uppercase text-slate-500 tracking-widest ml-1">Neural ID (Email)</label>
+                    <input
+                      type="email"
+                      value={userData.email}
+                      onChange={(e) => setUserData({...userData, email: e.target.value})}
+                      className="w-full bg-black/40 border border-white/10 rounded-lg py-3 px-4 text-white font-mono text-sm focus:border-cyan/50 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={saveUserData}
+                    className="flex-1 bg-cyan hover:bg-white text-black py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <Save size={14} />
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="flex-1 bg-magenta/10 border border-magenta/30 text-magenta hover:bg-magenta hover:text-white py-4 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={14} />
+                    Log Out
+                  </button>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
