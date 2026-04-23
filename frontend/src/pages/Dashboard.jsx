@@ -69,8 +69,10 @@ const Dashboard = () => {
   const [exportProgress, setExportProgress] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops' or 'intel'
-  const [activeNodeTab, setActiveNodeTab] = useState('logs'); // 'logs' or 'reports'
+  const [activeSidebarTab, setActiveSidebarTab] = useState('ops'); // 'ops', 'advice', or 'intel'
+  const [activeNodeTab, setActiveNodeTab] = useState('logs');
+  const [isWhatIfMode, setIsWhatIfMode] = useState(false);
+  const [simulationImpact, setSimulationImpact] = useState(null);
 
   const tacticalAdvice = {
     none: {
@@ -724,29 +726,55 @@ const Dashboard = () => {
                </div>
 
                {/* AI TACTICAL ADVICE OVERLAY (New Sidebar-like component inside Map) */}
-               <div className="absolute top-24 left-4 z-30 w-48 hidden lg:block">
+               <div className="absolute top-24 left-4 z-30 w-56 hidden lg:block">
                   <motion.div
                     initial={{ x: -100, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     className="glass-card bg-slate-950/80 border-cyan/20 p-3 space-y-3"
                   >
-                    <div className="flex items-center gap-2 border-b border-white/10 pb-2">
-                       <Cpu size={14} className="text-cyan" />
-                       <span className="text-[9px] font-black text-white uppercase tracking-wider">Tactical Intel</span>
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                       <div className="flex items-center gap-2">
+                         <Cpu size={14} className="text-cyan" />
+                         <span className="text-[9px] font-black text-white uppercase tracking-wider">Tactical Intel</span>
+                       </div>
+                       {isWhatIfMode && <span className="bg-magenta/20 text-magenta text-[8px] px-1 animate-pulse font-black">SIM_ACTIVE</span>}
                     </div>
                     <div className="space-y-2">
                        <div className="p-2 bg-cyan/5 rounded border border-cyan/10">
-                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">Route Status</p>
-                          <p className="text-[10px] text-acid font-black font-mono">ALL_OPTIMAL</p>
+                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">Network Resilience</p>
+                          <div className="flex items-end gap-2">
+                            <p className={`text-10px font-black font-mono ${optimizationScore > 70 ? 'text-acid' : 'text-magenta'}`}>
+                              {optimizationScore}%
+                            </p>
+                            <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                              <motion.div
+                                className={`h-full ${optimizationScore > 70 ? 'bg-acid' : 'bg-magenta'}`}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${optimizationScore}%` }}
+                              />
+                            </div>
+                          </div>
                        </div>
                        <div className="p-2 bg-white/5 rounded border border-white/5">
-                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">AI Suggestion</p>
+                          <p className="text-[8px] text-slate-400 uppercase font-bold mb-1">
+                            {isWhatIfMode ? "Digital Twin Projection" : "AI Contextual Advice"}
+                          </p>
                           <p className="text-[10px] text-white font-bold leading-tight uppercase">
-                            {activeScenario === 'none'
-                              ? "Monitor Sector-7 for incoming weather fronts."
-                              : "Diverting Assets to Alpha-9 node via bypass."}
+                            {isWhatIfMode
+                              ? "Predicting 14% ripple delay in Sector-B if congestion persists."
+                              : activeScenario === 'none'
+                                ? "Monitor Sector-7 for incoming weather fronts."
+                                : currentAdvice.advice}
                           </p>
                        </div>
+                       <button
+                         onClick={() => setIsWhatIfMode(!isWhatIfMode)}
+                         className={`w-full py-1.5 border text-[9px] font-black uppercase transition-all ${
+                           isWhatIfMode ? 'bg-magenta border-magenta text-white' : 'border-white/20 text-white/40 hover:text-white hover:border-white'
+                         }`}
+                       >
+                         {isWhatIfMode ? "Exit Simulation" : "Trigger What-If Engine"}
+                       </button>
                     </div>
                   </motion.div>
                </div>
