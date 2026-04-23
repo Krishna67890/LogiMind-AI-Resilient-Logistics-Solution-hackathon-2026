@@ -346,13 +346,24 @@ const Dashboard = () => {
     if (!activeAnomaly) return;
     setIsThinking(true);
     addLog(`FIX_PROTO: Resolving ${activeAnomaly.id}...`, "info");
+    setDecisionReason(`CALCULATING: Analyzing ${activeAnomaly.name} impact on sub-sector 4B...`);
 
     setTimeout(() => {
       setIsThinking(false);
+      const resolutionLogic = {
+        'MNT_01': "Redirecting Asset LM-204 to Sub-Sector 4B to bypass maintenance zone.",
+        'SNS_42': "Re-syncing neural telemetry with satellite backup. Ghosting suppressed.",
+        'RTC_99': "Recalculating weight-based pathfinding to mitigate thermal congestion.",
+        'PWR_X': "Shifting power load to secondary hydrogen fuel cells. Grid restored."
+      };
+
+      const reason = resolutionLogic[activeAnomaly.id] || "Heuristic fix applied to network node.";
+      setDecisionReason(`SUCCESS: ${reason}`);
       addLog(`SUCCESS: ${activeAnomaly.name} resolved. Core stability increased.`, "success");
       showNotify("Anomaly Resolved Successfully", "success");
       setActiveAnomaly(null);
-      setOptimizationScore(prev => Math.min(100, prev + 2));
+      setOptimizationScore(prev => Math.min(100, prev + 5.2));
+      runSimulation(); // Trigger mathematical re-scan
     }, 2000);
   };
 
