@@ -417,9 +417,9 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row gap-12 items-center">
              <div className="md:w-1/3">
                 <p className="text-cyan font-mono text-[10px] tracking-[0.5em] uppercase mb-4">Tactical Briefing</p>
-                <h2 className="text-4xl md:text-5xl uppercase tracking-tighter mb-6">Solution <br /><span className="text-gradient-cyan">Demo</span></h2>
+                <h2 className="text-4xl md:text-5xl uppercase tracking-tighter mb-6">Neural <br /><span className="text-gradient-cyan">Simulation</span></h2>
                 <p className="text-slate-500 text-sm leading-relaxed mb-8">
-                  Watch our 2-minute technical breakdown showing how LogiMind utilizes Google Cloud and Gemini AI to predict disruptions before they occur.
+                  LogiMind utilizes Google Cloud and Gemini AI to predict disruptions before they occur, creating a self-healing logistics network.
                 </p>
                 <div className="space-y-4">
                    <div className="flex items-center gap-3 text-cyan text-[10px] font-black uppercase tracking-widest">
@@ -433,16 +433,12 @@ const LandingPage = () => {
                 </div>
              </div>
 
-             <div className="flex-1 w-full aspect-video glass-card border-white/10 bg-slate-900/50 relative overflow-hidden group">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="LogiMind AI Demo"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-                <div className="absolute inset-0 pointer-events-none border-[20px] border-black/40" />
+             <div className="flex-1 w-full aspect-video glass-card border-white/10 bg-slate-900/50 relative overflow-hidden group flex items-center justify-center">
+                <div className="absolute inset-0 grid-overlay opacity-30" />
+                <div className="relative z-10 text-center space-y-4">
+                   <Cpu size={64} className="text-cyan/20 animate-spin-slow mx-auto" />
+                   <p className="text-cyan font-mono text-[10px] tracking-widest uppercase animate-pulse">Neural Link Active // Processing Simulation</p>
+                </div>
                 <div className="scanline-laser opacity-20" />
              </div>
           </div>
